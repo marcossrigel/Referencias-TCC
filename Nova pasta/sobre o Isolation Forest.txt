@@ -1,0 +1,30 @@
+De acordo com o documento, o Isolation Forest (iForest) aplica-se na prática em duas etapas principais: treinamento e avaliação.
+1. Etapa de Treinamento
+Na etapa de treinamento, o iForest constrói árvores de isolamento (iTrees) utilizando subamostras do conjunto de treinamento. O processo de construção das iTrees ocorre por meio de partições recursivas dos dados até que as instâncias sejam isoladas ou até que uma altura específica da árvore seja atingida. O limite de altura da árvore é definido automaticamente com base no tamanho da subamostra, sendo aproximadamente igual à altura média da árvore.
+
+Parâmetros principais:
+
+Tamanho da subamostra (ψ): Controla o tamanho dos dados de treinamento. Geralmente, valores pequenos (como 256) são suficientes para realizar a detecção de anomalias com alta eficiência.
+Número de árvores (t): Controla o tamanho do conjunto de árvores. O desempenho do iForest geralmente converge antes de atingir 100 árvores, tornando desnecessário aumentar esse número.
+
+Complexidade: A complexidade do treinamento do iForest é O(t log ψ), o que o torna altamente eficiente, mesmo para grandes conjuntos de dados.
+
+2. Etapa de Avaliação
+Na etapa de avaliação, o iForest calcula um score de anomalia (s) para cada instância de teste com base no comprimento médio do caminho (E(h(x))) percorrido por essa instância nas iTrees. O comprimento do caminho é o número de arestas que a instância percorre desde o nó raiz até o nó terminal em uma iTree.
+
+Processo:
+
+Cada instância de teste é passada por todas as iTrees do conjunto.
+O comprimento do caminho é calculado para cada árvore.
+O score de anomalia é derivado usando uma fórmula que normaliza o comprimento médio do caminho em relação ao tamanho da subamostra.
+
+Interpretação do score de anomalia:
+
+s próximo de 1: Instância é altamente provável de ser uma anomalia.
+s muito menor que 0.5: Instância é considerada normal.
+s próximo de 0.5 para todas as instâncias: Não há anomalias distintas no conjunto de dados.
+
+Complexidade: A complexidade da avaliação é O(nt log ψ), onde n é o tamanho do conjunto de dados de teste.
+
+Resumo
+O iForest aprende com os dados ao construir árvores de isolamento baseadas em partições aleatórias de subamostras do conjunto de treinamento. Ele utiliza a propriedade de que anomalias são "poucas e diferentes" para isolá-las mais rapidamente (caminhos mais curtos nas árvores). Durante a avaliação, o score de anomalia é calculado com base no comprimento médio dos caminhos percorridos pelas instâncias nas árvores, permitindo identificar as anomalias com alta eficiência e baixo custo computacional.
